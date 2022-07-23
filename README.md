@@ -48,8 +48,8 @@ Compilando o programa:
 ```
 gcc gauss-jacobi-seidel.c -Wall -o gauss-jacobi-seidel -lpthread
 ```
-Rode na forma:
-./gauss-jacobi-seidel.exe <numero threads> <numero de variaveis>
+Rode na forma:  
+./gauss-jacobi-seidel.exe (numero threads) (numero de variaveis)
 ```
 .\gauss-jacobi-seidel.exe 12 10000
 ```
