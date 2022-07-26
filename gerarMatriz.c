@@ -30,7 +30,7 @@ void *tarefaMatriz(void *arg) {
         somaLinha += valor;
       }
     }
-    *(*(aux + i) + i) = somaLinha/0.8;
+    *(*(aux + i) + i) = somaLinha/0.5;
   }
   pthread_exit(NULL);
 
