@@ -9,10 +9,11 @@
 #include "jacobiConcorrenteBarreira.c"
 #include "jacobiSequencial.c"
 #include "gaussSeidel.c"
+#include "SOR.c"
 #include "timer.h"
 
 int nthreads, n; // numero de threads e tamanho da matriz nxn
-int contadorJacobi = 0, contadorJacobiSeq = 0, contadorGaussSeidel = 0;  // contadores de iterações dos métodos analisados
+int contadorJacobi = 0, contadorJacobiSeq = 0, contadorGaussSeidel = 0, contadorSOR = 0;  // contadores de iterações dos métodos analisados
 double **a, *b, *x, *xn;
 
 /** @brief Gera o vetor b do sistema linear, Ax = b
@@ -24,9 +25,11 @@ double **a, *b, *x, *xn;
  *  @return Void.
  */
 void gerarVetorB(int tamanho) {
+  int limite = 2;
   srand(time(NULL));
   for (int i = 0; i < tamanho; i++) {
-    b[i] = (rand() % tamanho + 1) - ((rand() % 10 + 1)/10);
+    //b[i] = (rand() % tamanho + 1) - ((rand() % 10 + 1)/10);
+    b[i] = ((double)rand()/(double)(RAND_MAX)) * limite;
   }
 }
 
@@ -66,12 +69,17 @@ int main(int argc, char *argv[]) {
   }
   GET_TIME(ini); // início da marcação de tempo criação da matriz A)
   gerarMatriz(n, a, nthreads); // Gerando matriz A (utilizando threads na geração)
+  // *(*(a + 0) + 0) = 5; 
+  // *(*(a + 0) + 1) = 1; 
+  // *(*(a + 1) + 0) = 2; 
+  // *(*(a + 1) + 1) = 3;
   GET_TIME(fim); // fim da marcação de tempo
   printf("Tempo para gerar a matriz A:  %lf\n", fim - ini);
   
   printf("\n");
   GET_TIME(ini); // início da marcação de tempo para gerar b e x.
-
+  // b[0] = 10;
+  // b[1] = 4;
   gerarVetorB(n); // Gerando vetor do lado direito da igualdade
   for (int i = 0; i < n; i++) x[i] = 1;  // inicializa o vetor x com uns
 
@@ -103,6 +111,15 @@ int main(int argc, char *argv[]) {
 
   printf("O Gauss Seidel finalizado com %d iteracoes.\n", contadorGaussSeidel);
   printf("Tempo gasto no calculo de Gauss Seidel:  %lf\n", fim - ini);
+
+  for (int i = 0; i < n; i++) x[i] = 1;  // reinicializa o vetor x com uns
+  printf("\n");
+  GET_TIME(ini); // inicio da marcação de tempo da realização do método de gauss-seidel
+  SOR(n, a, b, x, xn, &contadorSOR);
+  GET_TIME(fim); // fim da marcação de tempo
+
+  printf("O SOR finalizado com %d iteracoes.\n", contadorSOR);
+  printf("Tempo gasto no calculo de SOR:  %lf\n", fim - ini);
 
 // libera memória alocada
   free(a);

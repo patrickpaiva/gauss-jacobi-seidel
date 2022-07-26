@@ -5,6 +5,7 @@
 
 double **aux;
 int tam, nthreads;
+double limite = 2;
 
 /** @brief Função que será executada pelas threads, a divisão foi feita de forma que cada thread
  *          execute apenas uma linha da matriz.
@@ -20,12 +21,16 @@ void *tarefaMatriz(void *arg) {
   long int id = (long int)arg;  // identificador da thread
   srand(time(NULL));
   for (int i = id; i < tam; i += nthreads) {
+    double somaLinha = 0;
     for (int j = 0; j < tam; j++) {
-      *(*(aux + i) + j) = ((rand() % tam) + 1) - ((rand() % 10 + 1)/11);
-      if (i == j) {
-        *(*(aux + i) + j) = (rand() % tam + 1) * (tam * tam) - ((rand() % 10 + 1)/11);
+      if (i != j) {
+        //double valor = ((rand() % tam) + 1) - ((rand() % 10 + 1)/11);
+        double valor = ((double)rand()/(double)(RAND_MAX)) * limite;
+        *(*(aux + i) + j) = valor;
+        somaLinha += valor;
       }
     }
+    *(*(aux + i) + i) = somaLinha/0.8;
   }
   pthread_exit(NULL);
 

@@ -13,7 +13,7 @@ int n, *contJacobiSeqAux;
 
 int execucaoJacobiSeq() {
   int flag, i;
-  double epsilon = 0.000001; // erro aceito tolerável
+  double epsilon = 0.00000001; // erro aceito tolerável
 
   do {
     (*contJacobiSeqAux)++;

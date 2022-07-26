@@ -58,7 +58,7 @@ void *tarefaJacobiConc(void *arg) {
 int execucaoJacobi() {
   pthread_t *tid;
   int flag = 1, i;
-  double epsilon = 0.000001; // erro aceito tolerável
+  double epsilon = 0.00000001; // erro aceito tolerável
   // aloca memória para threads
   tid = (pthread_t *)malloc(sizeof(pthread_t) * nthreads);
   if (tid == NULL) {
@@ -114,6 +114,7 @@ int execucaoJacobi() {
       exit(-1);
     }
   }
+
 }
 
 /** @brief  Função responsável chamar a execucaoJacobi() alocando todas as estruturas de dados necessárias.
